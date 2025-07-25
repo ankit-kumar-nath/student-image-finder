@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      student_data: {
+        Row: {
+          additional_info: Json | null
+          course: string | null
+          created_at: string
+          department: string | null
+          id: string
+          name: string | null
+          roll_number: string
+          source_file_name: string | null
+          updated_at: string
+          year: string | null
+        }
+        Insert: {
+          additional_info?: Json | null
+          course?: string | null
+          created_at?: string
+          department?: string | null
+          id?: string
+          name?: string | null
+          roll_number: string
+          source_file_name?: string | null
+          updated_at?: string
+          year?: string | null
+        }
+        Update: {
+          additional_info?: Json | null
+          course?: string | null
+          created_at?: string
+          department?: string | null
+          id?: string
+          name?: string | null
+          roll_number?: string
+          source_file_name?: string | null
+          updated_at?: string
+          year?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
