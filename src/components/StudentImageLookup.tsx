@@ -4,21 +4,27 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, Search, User } from 'lucide-react';
+import { AlertCircle, Search, User, BookOpen, Building, Calendar, FileText } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+
+interface StudentData {
+  id: string;
+  roll_number: string;
+  name: string | null;
+  course: string | null;
+  department: string | null;
+  year: string | null;
+  additional_info: any;
+  source_file_name: string | null;
+}
 
 const StudentImageLookup = () => {
   const [rollNumber, setRollNumber] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
-  const constructImageUrl = (rollNo: string) => {
-    const baseUrl = "https://gietuerp.in/StudentDocuments/22CSE1015/22CSE1015.JPG?v=z-VxW_RfKkCwdwJ9nfDcLX_iOjYVmmgca-yZEoEiqh4";
-    return baseUrl.replace(/22CSE1015/g, rollNo.toUpperCase());
-  };
 
   const handleSearch = async () => {
     if (!rollNumber.trim()) {
@@ -27,28 +33,32 @@ const StudentImageLookup = () => {
     }
 
     setIsLoading(true);
-    setImageError(false);
     setHasSearched(true);
+    setStudentData(null);
     
-    const url = constructImageUrl(rollNumber.trim());
-    setImageUrl(url);
-    
-    // Simulate loading time for better UX
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase
+        .from('student_data')
+        .select('*')
+        .eq('roll_number', rollNumber.trim())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          toast.error('No student data found for this roll number');
+        } else {
+          throw error;
+        }
+      } else {
+        setStudentData(data);
+        toast.success('Student data found successfully');
+      }
+    } catch (error) {
+      console.error('Error fetching student data:', error);
+      toast.error('Failed to fetch student data');
+    } finally {
       setIsLoading(false);
-    }, 800);
-  };
-
-  const handleImageError = () => {
-    setImageError(true);
-    setIsLoading(false);
-    toast.error('Student image not found for this roll number');
-  };
-
-  const handleImageLoad = () => {
-    setIsLoading(false);
-    setImageError(false);
-    toast.success('Student image loaded successfully');
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -66,10 +76,10 @@ const StudentImageLookup = () => {
             <User className="w-8 h-8 text-primary-foreground" />
           </div>
           <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2">
-            Student Image Lookup
+            Student Data Lookup
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Enter a student roll number to view their official image from GIET University portal
+            Enter a student roll number to view their information from uploaded Word documents
           </p>
         </div>
 
@@ -81,7 +91,7 @@ const StudentImageLookup = () => {
               Search Student
             </CardTitle>
             <CardDescription>
-              Enter the student's roll number (e.g., 22CSE1015) to fetch their image
+              Enter the student's roll number to fetch their data from uploaded documents
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -126,7 +136,7 @@ const StudentImageLookup = () => {
         {hasSearched && (
           <Card className="shadow-card border-0 bg-card/50 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle>Student Image</CardTitle>
+              <CardTitle>Student Information</CardTitle>
               <CardDescription>
                 {rollNumber && `Showing results for roll number: ${rollNumber.toUpperCase()}`}
               </CardDescription>
@@ -135,37 +145,97 @@ const StudentImageLookup = () => {
               <div className="flex justify-center">
                 {isLoading ? (
                   <div className="space-y-4">
-                    <Skeleton className="w-80 h-96 rounded-lg" />
+                    <Skeleton className="w-96 h-64 rounded-lg" />
                     <Skeleton className="w-40 h-4 mx-auto" />
                   </div>
-                ) : imageError ? (
+                ) : !studentData ? (
                   <Alert className="max-w-md border-destructive/20 bg-destructive/5">
                     <AlertCircle className="h-4 w-4 text-destructive" />
                     <AlertDescription className="text-destructive">
-                      No image found for roll number "{rollNumber.toUpperCase()}". 
-                      Please check the roll number and try again.
+                      No student data found for roll number "{rollNumber.toUpperCase()}". 
+                      Please upload the Word document containing this student's data or check the roll number.
                     </AlertDescription>
                   </Alert>
-                ) : imageUrl ? (
-                  <div className="text-center space-y-4">
-                    <div className="relative inline-block">
-                      <img
-                        src={imageUrl}
-                        alt={`Student ${rollNumber.toUpperCase()}`}
-                        onError={handleImageError}
-                        onLoad={handleImageLoad}
-                        className="max-w-80 max-h-96 object-cover rounded-lg shadow-elegant border-4 border-white"
-                      />
-                      <div className="absolute -bottom-2 -right-2 bg-success text-success-foreground px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                        ✓ Found
+                ) : (
+                  <div className="w-full max-w-2xl space-y-6">
+                    <div className="text-center">
+                      <div className="inline-flex items-center justify-center w-12 h-12 bg-success text-success-foreground rounded-full text-sm font-medium shadow-lg mb-4">
+                        ✓
                       </div>
+                      <h3 className="text-xl font-semibold text-foreground">Student Found</h3>
                     </div>
-                    <div className="bg-muted/50 rounded-lg p-4 max-w-md">
-                      <p className="text-sm text-muted-foreground mb-1">Roll Number</p>
-                      <p className="font-semibold text-lg">{rollNumber.toUpperCase()}</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <User className="w-4 h-4" />
+                          Roll Number
+                        </div>
+                        <p className="font-semibold text-lg">{studentData.roll_number}</p>
+                      </div>
+                      
+                      {studentData.name && (
+                        <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <User className="w-4 h-4" />
+                            Name
+                          </div>
+                          <p className="font-semibold">{studentData.name}</p>
+                        </div>
+                      )}
+                      
+                      {studentData.course && (
+                        <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <BookOpen className="w-4 h-4" />
+                            Course
+                          </div>
+                          <p className="font-semibold">{studentData.course}</p>
+                        </div>
+                      )}
+                      
+                      {studentData.department && (
+                        <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Building className="w-4 h-4" />
+                            Department
+                          </div>
+                          <p className="font-semibold">{studentData.department}</p>
+                        </div>
+                      )}
+                      
+                      {studentData.year && (
+                        <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Calendar className="w-4 h-4" />
+                            Year
+                          </div>
+                          <p className="font-semibold">{studentData.year}</p>
+                        </div>
+                      )}
+                      
+                      {studentData.source_file_name && (
+                        <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <FileText className="w-4 h-4" />
+                            Source File
+                          </div>
+                          <p className="font-semibold text-sm">{studentData.source_file_name}</p>
+                        </div>
+                      )}
                     </div>
+                    
+                    {studentData.additional_info && (
+                      <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <AlertCircle className="w-4 h-4" />
+                          Additional Information
+                        </div>
+                        <pre className="text-sm whitespace-pre-wrap">{JSON.stringify(studentData.additional_info, null, 2)}</pre>
+                      </div>
+                    )}
                   </div>
-                ) : null}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -176,8 +246,8 @@ const StudentImageLookup = () => {
           <Alert className="max-w-2xl mx-auto border-accent/20 bg-accent/5">
             <AlertCircle className="h-4 w-4 text-accent-foreground" />
             <AlertDescription className="text-accent-foreground">
-              <strong>Note:</strong> This application fetches student images from the GIET University portal. 
-              Images are only available for enrolled students with valid roll numbers.
+              <strong>Note:</strong> Student data is extracted from uploaded Word documents. 
+              Upload Word files using the document upload feature to add new student records.
             </AlertDescription>
           </Alert>
         </div>
