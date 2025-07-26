@@ -97,13 +97,27 @@ const DocumentUpload = () => {
               <Label htmlFor="file-input" className="text-sm font-medium">
                 Select Word Document
               </Label>
-              <Input
-                id="file-input"
-                type="file"
-                accept=".doc,.docx"
-                onChange={handleFileSelect}
-                className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-              />
+              <div className="flex items-center justify-center w-full">
+                <label 
+                  htmlFor="file-input" 
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted/20 hover:bg-muted/40 transition-colors"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-8 h-8 mb-4 text-muted-foreground" />
+                    <p className="mb-2 text-sm text-muted-foreground">
+                      <span className="font-semibold">Click to upload</span> or drag and drop
+                    </p>
+                    <p className="text-xs text-muted-foreground">Word documents (.doc, .docx)</p>
+                  </div>
+                  <Input
+                    id="file-input"
+                    type="file"
+                    accept=".doc,.docx"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                </label>
+              </div>
             </div>
 
             {file && (
