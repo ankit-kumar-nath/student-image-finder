@@ -1,73 +1,132 @@
-# Welcome to your Lovable project
+# Student Image Lookup - GIET University
 
-## Project info
+A modern web application for finding student images by roll number from GIET University portal.
 
-**URL**: https://lovable.dev/projects/ef49a6fa-de52-4a68-8434-04469122f5d6
+## 🎯 Features
 
-## How can I edit this code?
+- **Student Search**: Look up student images using their roll number
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Modern UI**: Built with shadcn/ui components and Tailwind CSS
+- **Fast Performance**: Powered by Vite and React
+- **Type Safety**: Full TypeScript implementation
 
-There are several ways of editing your application.
+## 🚀 Technology Stack
 
-**Use Lovable**
+- **Frontend**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Backend**: Supabase
+- **Routing**: React Router v6
+- **State Management**: TanStack Query
+- **Forms**: React Hook Form with Zod validation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ef49a6fa-de52-4a68-8434-04469122f5d6) and start prompting.
+## 📋 Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+Before running this project, make sure you have:
 
-**Use your preferred IDE**
+- Node.js (v18 or higher)
+- npm or yarn package manager
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_GIT_URL>
+   cd <YOUR_PROJECT_NAME>
+   ```
 
-Follow these steps:
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. **Open your browser**
+   Navigate to `http://localhost:8080`
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 📁 Project Structure
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn/ui components
+│   └── StudentImageLookup.tsx
+├── pages/              # Route components
+├── lib/                # Utility functions
+├── hooks/              # Custom React hooks
+└── integrations/       # External service integrations
+    └── supabase/       # Supabase configuration
 ```
 
-**Edit a file directly in GitHub**
+## 🎨 Design System
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+This project uses a comprehensive design system built with:
+- **Tailwind CSS** for utility-first styling
+- **CSS Custom Properties** for theming
+- **shadcn/ui** for consistent component library
+- **Dark/Light Mode** support
 
-**Use GitHub Codespaces**
+## 🔧 Available Scripts
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-## What technologies are used for this project?
+## 🌐 Deployment
 
-This project is built with:
+### Deploy with Lovable
+1. Open your [Lovable project](https://lovable.dev/projects/ef49a6fa-de52-4a68-8434-04469122f5d6)
+2. Click **Share** → **Publish**
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Deploy Manually
+This is a standard Vite React application that can be deployed to any static hosting service:
+- Vercel
+- Netlify
+- GitHub Pages
+- Firebase Hosting
 
-## How can I deploy this project?
+## 🔗 Custom Domain
 
-Simply open [Lovable](https://lovable.dev/projects/ef49a6fa-de52-4a68-8434-04469122f5d6) and click on Share -> Publish.
+To connect a custom domain:
+1. Navigate to **Project** → **Settings** → **Domains** in Lovable
+2. Click **Connect Domain**
+3. Follow the setup instructions
 
-## Can I connect a custom domain to my Lovable project?
+*Note: A paid Lovable plan is required for custom domains.*
 
-Yes, you can!
+## 🤝 Contributing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🏫 About GIET University
+
+This application is designed specifically for GIET University students and staff to facilitate easy lookup of student information.
+
+## 📞 Support
+
+For support and questions:
+- Create an issue in this repository
+- Contact the development team
+- Visit [Lovable Documentation](https://docs.lovable.dev)
+
+## 🔄 Version History
+
+See the [commit history](../../commits) for detailed version information.
+
+---
+
+Built with ❤️ using [Lovable](https://lovable.dev)
