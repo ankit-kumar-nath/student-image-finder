@@ -116,17 +116,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 This application is designed specifically for GIET University students and staff to facilitate easy lookup of student information.
 
-## 📞 Support
 
-For support and questions:
-- Create an issue in this repository
-- Contact the development team
-- Visit [Lovable Documentation](https://docs.lovable.dev)
 
-## 🔄 Version History
-
-See the [commit history](../../commits) for detailed version information.
-
----
-
-Built with ❤️ using [Lovable](https://lovable.dev)
