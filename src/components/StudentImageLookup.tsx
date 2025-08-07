@@ -110,7 +110,7 @@ const StudentImageLookup = () => {
                     </Label>
                     <Input
                       id="rollNumber"
-                      placeholder="e.g., 22CSE1015"
+                      placeholder="Enter roll number"
                       value={rollNumber}
                       onChange={(e) => setRollNumber(e.target.value)}
                       onKeyPress={handleKeyPress}
