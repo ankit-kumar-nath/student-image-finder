@@ -1,4 +1,1 @@
 project_id = "aljlqaevxxjwxmhxgczm"
-
-[functions.upload-student-data]
-verify_jwt = false

@@ -11,7 +11,6 @@ import { toast } from 'sonner';
 import ImageViewer from './features/ImageViewer';
 import StudentDetails from './features/StudentDetails';
 import RecentSearches from './features/RecentSearches';
-import { ExcelUpload } from './features/ExcelUpload';
 
 const StudentImageLookup = () => {
   const [rollNumber, setRollNumber] = useState('');
@@ -19,7 +18,6 @@ const StudentImageLookup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const constructImageUrl = (rollNo: string) => {
     const baseUrl = "https://gietuerp.in/StudentDocuments/22CSE1015/22CSE1015.JPG?v=z-VxW_RfKkCwdwJ9nfDcLX_iOjYVmmgca-yZEoEiqh4";
@@ -71,11 +69,6 @@ const StudentImageLookup = () => {
     if (e.key === 'Enter') {
       handleSearch();
     }
-  };
-
-  const handleUploadComplete = () => {
-    setRefreshKey(prev => prev + 1);
-    toast.success('Student data uploaded successfully! You can now search for students.');
   };
 
   return (
@@ -145,11 +138,6 @@ const StudentImageLookup = () => {
               </CardContent>
             </Card>
 
-            {/* Excel Upload Section */}
-            <div className="animate-slide-up">
-              <ExcelUpload onUploadComplete={handleUploadComplete} />
-            </div>
-
             {/* Recent Searches */}
             <div className="animate-slide-up">
               <RecentSearches onSelectRollNumber={(roll) => {
@@ -215,7 +203,9 @@ const StudentImageLookup = () => {
                 </TabsContent>
 
                 <TabsContent value="details" className="space-y-6">
-                  <StudentDetails key={refreshKey} rollNumber={rollNumber} />
+                  {!imageError && imageUrl && (
+                    <StudentDetails rollNumber={rollNumber} />
+                  )}
                 </TabsContent>
 
                 <TabsContent value="info" className="space-y-6">
